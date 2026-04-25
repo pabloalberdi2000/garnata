@@ -1,0 +1,126 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@100;200;300;400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply antialiased;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-white text-slate-800 font-light;
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 300;
+    letter-spacing: 0.02em;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-light;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+  }
+
+  h1 {
+    @apply text-5xl md:text-6xl;
+  }
+
+  h2 {
+    @apply text-4xl md:text-5xl;
+  }
+
+  h3 {
+    @apply text-2xl md:text-3xl;
+  }
+
+  p {
+    @apply font-light leading-relaxed;
+    font-weight: 300;
+  }
+
+  a {
+    @apply transition-colors duration-300;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply px-8 py-3 bg-slate-900 text-white font-light rounded-none hover:bg-slate-800 transition-all duration-300 tracking-wide uppercase text-sm;
+  }
+
+  .btn-secondary {
+    @apply px-8 py-3 border border-slate-900 text-slate-900 font-light rounded-none hover:bg-slate-50 transition-colors duration-300 tracking-wide uppercase text-sm;
+  }
+
+  .card {
+    @apply bg-white border border-slate-200 hover:border-slate-400 transition-all duration-300;
+  }
+
+  .divider {
+    @apply h-px bg-slate-200;
+  }
+
+  .section-title {
+    @apply font-serif text-4xl md:text-5xl font-light text-slate-900;
+    letter-spacing: 0.05em;
+  }
+
+  .section-subtitle {
+    @apply text-slate-600 font-light text-lg md:text-xl;
+    font-weight: 300;
+  }
+}
+
+/* Custom Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@layer utilities {
+  .animate-fade-in {
+    @apply animate-[fadeIn_0.6s_ease-out];
+  }
+
+  .animate-slide-in {
+    @apply animate-[slideIn_0.6s_ease-out];
+  }
+
+  .text-elegant {
+    font-family: 'Playfair Display', serif;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+  }
+
+  .text-light {
+    font-weight: 300;
+    letter-spacing: 0.02em;
+  }
+
+  .border-elegant {
+    @apply border-b border-slate-200;
+  }
+}
