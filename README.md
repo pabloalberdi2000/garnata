@@ -121,7 +121,9 @@ npm run preview
 - Actualización de cantidades
 - Cálculo automático de totales
 - Resumen de orden con IVA incluido
-- Botón de checkout preparado para Stripe
+- Formulario elegante para completar pedido
+- Envío seguro de pedidos por correo electrónico
+- Pantalla de confirmación con mensaje personalizado
 
 ### ℹ️ Página Nosotros
 - Historia de la marca
@@ -153,6 +155,26 @@ npm run preview
    - email (Short text)
    - phone (Short text)
    - address (Long text)
+
+## 📧 Integración EmailJS
+
+El sistema de pedidos funciona mediante correo electrónico:
+- Formulario de datos del cliente con validación
+- Envío seguro de pedidos a `palberdi2000@gmail.com`
+- Notificación automática al cliente
+- Estados visuales durante el envío
+
+### Configuración de EmailJS
+
+1. Crear cuenta en [EmailJS](https://www.emailjs.com)
+2. Crear un Service Email
+3. Crear un Template de Email con variables:
+   - `to_email`, `from_name`, `from_email`, `customer_phone`
+   - `order_items`, `subtotal`, `iva`, `total`, `items_count`
+4. Actualizar en `src/services/emailService.ts`:
+   - `EMAILJS_SERVICE_ID`
+   - `EMAILJS_TEMPLATE_ID`
+   - `EMAILJS_PUBLIC_KEY`
 
 ## 💳 Integración Stripe
 
@@ -197,12 +219,14 @@ const { data: collections, loading, error } = useCollections()
 ## 🚀 Próximos Pasos
 
 1. ✅ Conectar Contentful (reemplazar datos mock)
-2. ✅ Integrar Stripe Checkout completamente
-3. ✅ Añadir autenticación de usuarios
-4. ✅ Implementar página de detalles de producto
-5. ✅ Añadir búsqueda de productos
-6. ✅ Sistema de reseñas y ratings
-7. ✅ Admin dashboard para gestionar productos
+2. ✅ Sistema de pedidos por correo electrónico
+3. ✅ Formulario de datos del cliente con validación
+4. ✅ Integrar Stripe Checkout completamente
+5. ✅ Añadir autenticación de usuarios
+6. ✅ Implementar página de detalles de producto
+7. ✅ Añadir búsqueda de productos
+8. ✅ Sistema de reseñas y ratings
+9. ✅ Admin dashboard para gestionar productos
 
 ## 📝 Notas de Desarrollo
 
