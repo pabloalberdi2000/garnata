@@ -92,35 +92,43 @@ export const OrderForm: React.FC<OrderFormProps> = ({ onSuccess, onCancel }) => 
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    console.log('🔵 Formulario enviado')
 
     if (!validateForm()) {
+      console.log('❌ Validación fallida')
       return
     }
 
     setIsLoading(true)
+    console.log('⏳ Iniciando carga...')
 
     try {
       const orderData = prepareOrderData()
+      console.log('📦 Datos del pedido preparados:', orderData)
 
+      console.log('🚀 Enviando emails...')
       await sendOrderEmail({
         to_email: 'glorialara72@gmail.com',
-        from_name: `${orderData.nombre} ${orderData.apellidos}`,
-        from_email: orderData.email,
-        customer_phone: orderData.telefono,
-        order_items: orderData.orden_items,
-        subtotal: orderData.subtotal,
-        iva: orderData.iva,
-        total: orderData.total,
-        items_count: orderData.cantidad_articulos,
+        name: `${orderData.nombre} ${orderData.apellidos}`,
+        email: orderData.email,
+        phone: orderData.telefono,
+        order_details: orderData.orden_items,
+        cost_total: orderData.total,
       })
 
+      console.log('✓ Emails enviados exitosamente')
       clearCart()
+      console.log('✓ Carrito limpiado')
+      console.log('🎉 Llamando onSuccess()...')
       onSuccess()
+      console.log('✓ onSuccess() ejecutado')
     } catch (error) {
-      console.error('Error sending email:', error)
-      alert('Error al enviar el pedido. Por favor, intenta de nuevo.')
+      console.error('❌ Error al enviar el pedido:', error)
+      const errorMessage = error instanceof Error ? error.message : 'Error desconocido'
+      alert(`❌ Error al procesar tu pedido: ${errorMessage}\n\nPor favor, intenta de nuevo o contacta con nosotros.`)
     } finally {
       setIsLoading(false)
+      console.log('✓ Carga finalizada')
     }
   }
 
