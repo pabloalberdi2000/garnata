@@ -1,0 +1,214 @@
+/* Editorial Typography System for GARNATA */
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap');
+
+/* ============ BASE TYPOGRAPHIC SCALE ============ */
+
+:root {
+  /* Primary Serif (Headlines) */
+  --font-serif: 'Cormorant Garamond', serif;
+  --font-sans: 'Inter', sans-serif;
+
+  /* Spacing Scale (Editorial) */
+  --spacing-xs: 0.5rem;      /* 8px */
+  --spacing-sm: 1rem;        /* 16px */
+  --spacing-md: 1.5rem;      /* 24px */
+  --spacing-lg: 2rem;        /* 32px */
+  --spacing-xl: 3rem;        /* 48px */
+  --spacing-2xl: 4rem;       /* 64px */
+  --spacing-3xl: 6rem;       /* 96px */
+
+  /* Text Properties */
+  --tracking-loose: 0.15em;  /* 150% letter spacing for metadata */
+  --tracking-normal: 0.05em; /* Normal tracking */
+
+  /* Line Heights */
+  --leading-tight: 1.1;      /* Headlines: 110% */
+  --leading-normal: 1.5;     /* Body: 150% */
+  --leading-relaxed: 1.75;   /* Extended: 175% */
+}
+
+/* ============ HEADLINE STYLES ============ */
+
+.h1-editorial {
+  font-family: var(--font-serif);
+  font-size: clamp(2.5rem, 8vw, 4rem);
+  font-weight: 300;
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-normal);
+  text-transform: capitalize;
+}
+
+.h2-editorial {
+  font-family: var(--font-serif);
+  font-size: clamp(1.875rem, 5vw, 2.5rem);
+  font-weight: 300;
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-normal);
+}
+
+.h3-editorial {
+  font-family: var(--font-serif);
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 300;
+  line-height: var(--leading-tight);
+}
+
+/* ============ BODY TEXT STYLES ============ */
+
+.body-regular {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 300;
+  line-height: var(--leading-normal);
+  letter-spacing: var(--tracking-normal);
+}
+
+.body-small {
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 300;
+  line-height: var(--leading-normal);
+}
+
+/* ============ METADATA STYLES ============ */
+
+.metadata {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 300;
+  letter-spacing: var(--tracking-loose);
+  text-transform: uppercase;
+}
+
+.price-label {
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* ============ UTILITY CLASSES ============ */
+
+.text-light {
+  font-weight: 300;
+}
+
+.text-regular {
+  font-weight: 400;
+}
+
+.text-semibold {
+  font-weight: 600;
+}
+
+.tracking-editorial {
+  letter-spacing: var(--tracking-loose);
+}
+
+/* ============ PROSE STYLING ============ */
+
+.prose-editorial {
+  color: #1e293b; /* slate-900 */
+  font-family: var(--font-sans);
+  font-weight: 300;
+  line-height: var(--leading-relaxed);
+}
+
+.prose-editorial p {
+  margin-bottom: var(--spacing-md);
+}
+
+.prose-editorial h1,
+.prose-editorial h2,
+.prose-editorial h3 {
+  font-family: var(--font-serif);
+  font-weight: 300;
+  margin-top: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
+}
+
+/* ============ EDITORIAL SPACING ============ */
+
+.space-editorial-xs {
+  margin-top: var(--spacing-xs);
+  margin-bottom: var(--spacing-xs);
+}
+
+.space-editorial-sm {
+  margin-top: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+}
+
+.space-editorial-md {
+  margin-top: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.space-editorial-lg {
+  margin-top: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+}
+
+.space-editorial-xl {
+  margin-top: var(--spacing-xl);
+  margin-bottom: var(--spacing-xl);
+}
+
+/* ============ DECORATIVE ELEMENTS ============ */
+
+.divider-light {
+  border-top: 1px solid #f1f5f9; /* slate-100 */
+}
+
+.divider-medium {
+  border-top: 1px solid #e2e8f0; /* slate-200 */
+}
+
+/* ============ ANIMATIONS ============ */
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.6s ease-out;
+}
+
+.animate-slide-up {
+  animation: slide-up 0.6s ease-out;
+}
+
+/* ============ DARK MODE (Optional) ============ */
+
+@media (prefers-color-scheme: dark) {
+  .prose-editorial {
+    color: #f1f5f9; /* slate-100 */
+  }
+
+  .divider-light {
+    border-top-color: #334155; /* slate-700 */
+  }
+
+  .divider-medium {
+    border-top-color: #475569; /* slate-600 */
+  }
+}

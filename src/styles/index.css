@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@100;200;300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -14,16 +15,16 @@
   }
 
   body {
-    @apply bg-white text-slate-800 font-light;
-    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    @apply bg-cream-50 text-slate-900 font-light;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     font-weight: 300;
     letter-spacing: 0.02em;
   }
 
   h1, h2, h3, h4, h5, h6 {
     @apply font-light;
-    font-family: 'Playfair Display', Georgia, serif;
-    font-weight: 400;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-weight: 300;
     letter-spacing: 0.05em;
   }
 
@@ -51,29 +52,38 @@
 
 @layer components {
   .btn-primary {
-    @apply px-8 py-3 bg-slate-900 text-white font-light rounded-none hover:bg-slate-800 transition-all duration-300 tracking-wide uppercase text-sm;
+    @apply px-8 py-3 bg-slate-900 text-white font-light rounded-none hover:bg-slate-800 transition-all duration-700 tracking-wide uppercase text-xs;
   }
 
   .btn-secondary {
-    @apply px-8 py-3 border border-slate-900 text-slate-900 font-light rounded-none hover:bg-slate-50 transition-colors duration-300 tracking-wide uppercase text-sm;
+    @apply px-8 py-3 border border-slate-900 text-slate-900 font-light rounded-none hover:bg-cream-50 transition-colors duration-700 tracking-wide uppercase text-xs;
   }
 
   .card {
-    @apply bg-white border border-slate-200 hover:border-slate-400 transition-all duration-300;
+    @apply bg-white hover:shadow-lg transition-all duration-300;
   }
 
   .divider {
-    @apply h-px bg-slate-200;
+    @apply h-px bg-cream-200;
   }
 
   .section-title {
-    @apply font-serif text-4xl md:text-5xl font-light text-slate-900;
+    font-family: 'Cormorant Garamond', serif;
+    @apply text-4xl md:text-5xl font-light text-slate-900;
     letter-spacing: 0.05em;
   }
 
   .section-subtitle {
     @apply text-slate-600 font-light text-lg md:text-xl;
     font-weight: 300;
+  }
+
+  .product-card {
+    @apply bg-white border-b border-cream-200 hover:border-slate-300 transition-colors duration-500;
+  }
+
+  .editorial-divider {
+    @apply border-t border-cream-200 my-16 md:my-24;
   }
 }
 

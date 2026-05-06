@@ -43,9 +43,9 @@ export default {
         }
       },
       fontFamily: {
-        sans: ['-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', '"Helvetica Neue"', 'Helvetica', 'Arial', 'sans-serif'],
-        serif: ['"Playfair Display"', '"Georgia Pro"', 'Georgia', 'serif'],
-        light: ['-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', '"Helvetica Neue"', 'sans-serif'],
+        serif: ['Cormorant Garamond', '"Georgia Pro"', 'Georgia', 'serif'],
+        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', '"Helvetica Neue"', 'sans-serif'],
+        light: ['Inter', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'sans-serif'],
       },
       fontWeight: {
         thin: '100',
@@ -59,7 +59,7 @@ export default {
         black: '900',
       },
       fontSize: {
-        xs: ['0.75rem', { lineHeight: '1.1', fontWeight: '300' }],
+        xs: ['0.75rem', { lineHeight: '1.1', fontWeight: '300', letterSpacing: '0.15em' }],
         sm: ['0.875rem', { lineHeight: '1.4', fontWeight: '300' }],
         base: ['1rem', { lineHeight: '1.6', fontWeight: '300' }],
         lg: ['1.125rem', { lineHeight: '1.7', fontWeight: '300' }],
@@ -76,12 +76,19 @@ export default {
         wide: '0.05em',
         wider: '0.1em',
         widest: '0.15em',
+        editorial: '0.15em',
       },
       spacing: {
         'safe-top': 'env(safe-area-inset-top)',
         'safe-bottom': 'env(safe-area-inset-bottom)',
         'safe-left': 'env(safe-area-inset-left)',
         'safe-right': 'env(safe-area-inset-right)',
+      },
+      transitionDuration: {
+        '700': '700ms',
+      },
+      transitionTimingFunction: {
+        'out-smooth': 'cubic-bezier(0.4, 0, 0.2, 1)',
       },
     },
   },
