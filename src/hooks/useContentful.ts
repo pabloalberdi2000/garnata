@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { contentfulService, Product, Collection, StoreInfo } from '../services/contentfulService'
+import { contentfulService, Product, Collection } from '../services/contentfulService'
 
 interface UseDataResult<T> {
   data: T | null
@@ -36,10 +36,10 @@ const useContentful = <T,>(
   return { data, loading, error }
 }
 
-export const useProducts = (collection: string | null = null): UseDataResult<Product[]> => {
+export const useProducts = (): UseDataResult<Product[]> => {
   return useContentful(
-    () => contentfulService.getProducts(collection),
-    [collection]
+    () => contentfulService.getProducts(),
+    []
   )
 }
 
@@ -52,8 +52,4 @@ export const useProduct = (productId: string): UseDataResult<Product> => {
 
 export const useCollections = (): UseDataResult<Collection[]> => {
   return useContentful(() => contentfulService.getCollections(), [])
-}
-
-export const useStoreInfo = (): UseDataResult<StoreInfo> => {
-  return useContentful(() => contentfulService.getStoreInfo() as Promise<StoreInfo>, [])
 }

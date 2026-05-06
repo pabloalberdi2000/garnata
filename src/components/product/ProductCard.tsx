@@ -6,10 +6,11 @@ interface ProductCardProps {
   product: {
     id: string
     name: string
-    description: string
+    description?: string
     price: number
-    collection: string
-    image?: string
+    slug?: string
+    pictures?: string[]
+    status?: ('Disponible' | 'Ultimas unidades' | 'Agotado')[]
   }
 }
 
@@ -46,9 +47,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       <div className="bg-white border border-slate-200 overflow-hidden hover:border-slate-400 transition-all duration-300">
         {/* Image Container */}
         <div className="relative bg-slate-100 h-72 overflow-hidden">
-          {product.image ? (
+          {product.pictures?.[0] ? (
             <img
-              src={product.image}
+              src={product.pictures[0]}
               alt={product.name}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             />
@@ -63,7 +64,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         <div className="p-8 space-y-6">
           <div className="space-y-3">
             <p className="text-xs text-slate-500 font-light tracking-widest uppercase">
-              {product.collection}
+              Joya Exclusiva
             </p>
             <h3 className="text-xl font-serif font-light text-slate-900 group-hover:text-slate-700 transition-colors">
               {product.name}

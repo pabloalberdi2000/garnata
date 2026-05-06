@@ -1,11 +1,16 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { useCart } from '../../hooks/useCart'
 import CartIcon from '../icons/CartIcon'
 
 export const Navbar: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false)
   const { totalItems } = useCart()
+  const location = useLocation()
+
+  const isActive = (path: string) => {
+    return location.pathname === path || location.pathname.startsWith(path + '/')
+  }
 
   return (
     <nav className="bg-white border-b border-slate-200 sticky top-0 z-50">
@@ -20,13 +25,21 @@ export const Navbar: React.FC = () => {
           <div className="hidden md:flex items-center space-x-12">
             <Link
               to="/catalog"
-              className="text-slate-700 font-light text-sm tracking-wide hover:text-slate-900 transition-colors duration-300"
+              className={`text-sm tracking-wide transition-colors duration-300 ${
+                isActive('/catalog')
+                  ? 'font-semibold text-slate-900 border-b-2 border-slate-900 pb-1'
+                  : 'font-light text-slate-700 hover:text-slate-900'
+              }`}
             >
               CATÁLOGO
             </Link>
             <Link
               to="/about"
-              className="text-slate-700 font-light text-sm tracking-wide hover:text-slate-900 transition-colors duration-300"
+              className={`text-sm tracking-wide transition-colors duration-300 ${
+                isActive('/about')
+                  ? 'font-semibold text-slate-900 border-b-2 border-slate-900 pb-1'
+                  : 'font-light text-slate-700 hover:text-slate-900'
+              }`}
             >
               NOSOTROS
             </Link>
@@ -77,14 +90,22 @@ export const Navbar: React.FC = () => {
           <div className="md:hidden pb-4 border-t border-slate-200">
             <Link
               to="/catalog"
-              className="block py-3 text-slate-700 font-light text-sm tracking-wide hover:text-slate-900"
+              className={`block py-3 text-sm tracking-wide transition-colors ${
+                isActive('/catalog')
+                  ? 'font-semibold text-slate-900'
+                  : 'font-light text-slate-700 hover:text-slate-900'
+              }`}
               onClick={() => setMenuOpen(false)}
             >
               CATÁLOGO
             </Link>
             <Link
               to="/about"
-              className="block py-3 text-slate-700 font-light text-sm tracking-wide hover:text-slate-900"
+              className={`block py-3 text-sm tracking-wide transition-colors ${
+                isActive('/about')
+                  ? 'font-semibold text-slate-900'
+                  : 'font-light text-slate-700 hover:text-slate-900'
+              }`}
               onClick={() => setMenuOpen(false)}
             >
               NOSOTROS

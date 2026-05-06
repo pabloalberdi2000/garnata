@@ -1,4 +1,5 @@
 import React from 'react'
+import { useBrandInfo } from '../hooks/useDrops'
 
 interface ProcessStep {
   step: number
@@ -35,16 +36,29 @@ const processSteps: ProcessStep[] = [
 ]
 
 export const About: React.FC = () => {
+  const { data: brandInfo, loading } = useBrandInfo()
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-cream-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-6xl mb-4 font-light">◆</div>
+          <p className="text-slate-600 font-light">Cargando información...</p>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-cream-50">
       {/* Hero Section */}
       <section className="bg-gradient-to-r from-slate-950 to-slate-900 text-cream-50 py-16 md:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-5xl md:text-6xl font-serif font-bold text-gold-400 mb-6">
-            Sobre GARNATA
+            {brandInfo?.name || 'Sobre GARNATA'}
           </h1>
           <p className="text-xl text-cream-200 max-w-2xl mx-auto">
-            Tradición, artesanía y elegancia en cada joya que creamos
+            {brandInfo?.slogan || 'Tradición, artesanía y elegancia en cada joya que creamos'}
           </p>
         </div>
       </section>
@@ -57,23 +71,39 @@ export const About: React.FC = () => {
               <h2 className="text-4xl font-serif font-bold text-slate-900">
                 Nuestra Historia
               </h2>
-              <p className="text-lg text-slate-600 leading-relaxed">
-                GARNATA nació hace más de 20 años con la visión de crear joyas
-                que transciendan el tiempo. Cada pieza es diseñada con pasión y
-                creada con las técnicas tradicionales de orfebrería.
-              </p>
-              <p className="text-lg text-slate-600 leading-relaxed">
-                Ubicados en el corazón de Granada, España, nos enorgullece crear
-                joyas que reflejan la belleza y la rica cultural de nuestra región.
-              </p>
-              <p className="text-lg text-slate-600 leading-relaxed">
-                Utilizamos únicamente materiales de la más alta calidad: oro,
-                plata, y piedras preciosas certificadas, garantizando que cada
-                joya durará toda una vida.
-              </p>
+              {brandInfo?.description ? (
+                <div className="text-lg text-slate-600 leading-relaxed prose-editorial">
+                  {brandInfo.description}
+                </div>
+              ) : (
+                <>
+                  <p className="text-lg text-slate-600 leading-relaxed">
+                    GARNATA nació hace más de 20 años con la visión de crear joyas
+                    que transciendan el tiempo. Cada pieza es diseñada con pasión y
+                    creada con las técnicas tradicionales de orfebrería.
+                  </p>
+                  <p className="text-lg text-slate-600 leading-relaxed">
+                    Ubicados en el corazón de Granada, España, nos enorgullece crear
+                    joyas que reflejan la belleza y la rica cultural de nuestra región.
+                  </p>
+                  <p className="text-lg text-slate-600 leading-relaxed">
+                    Utilizamos únicamente materiales de la más alta calidad: oro,
+                    plata, y piedras preciosas certificadas, garantizando que cada
+                    joya durará toda una vida.
+                  </p>
+                </>
+              )}
             </div>
-            <div className="bg-gradient-to-br from-gold-100 to-cream-100 rounded-lg h-96 flex items-center justify-center text-6xl">
-              ✨
+            <div className="bg-gradient-to-br from-gold-100 to-cream-100 rounded-lg h-96 flex items-center justify-center text-6xl overflow-hidden">
+              {brandInfo?.pictures?.[0] ? (
+                <img
+                  src={brandInfo.pictures[0]}
+                  alt={brandInfo.name}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <span>✨</span>
+              )}
             </div>
           </div>
         </div>
@@ -159,12 +189,21 @@ export const About: React.FC = () => {
           <p className="text-lg text-cream-200 mb-8">
             Contáctanos directamente. Nuestro equipo está aquí para ayudarte.
           </p>
-          <a
-            href="mailto:info@garnata.com"
-            className="inline-block px-8 py-4 bg-gold-500 text-slate-950 font-bold rounded-lg hover:bg-gold-400 transition-all transform hover:scale-105"
-          >
-            Envíanos un Correo
-          </a>
+          {brandInfo?.email ? (
+            <a
+              href={`mailto:${brandInfo.email}`}
+              className="inline-block px-8 py-4 bg-gold-500 text-slate-950 font-bold rounded-lg hover:bg-gold-400 transition-all transform hover:scale-105"
+            >
+              Envíanos un Correo
+            </a>
+          ) : (
+            <a
+              href="mailto:info@garnata.com"
+              className="inline-block px-8 py-4 bg-gold-500 text-slate-950 font-bold rounded-lg hover:bg-gold-400 transition-all transform hover:scale-105"
+            >
+              Envíanos un Correo
+            </a>
+          )}
         </div>
       </section>
     </div>

@@ -1,16 +1,6 @@
 import React, { useState } from 'react'
-import { Product } from '../../services/contentfulService'
+import { Drop } from '../../services/contentfulService'
 import CatalogLayout from './CatalogLayout'
-
-export interface Drop {
-  id: string
-  title: string
-  description: string
-  season: string
-  year: number
-  products: Product[]
-  isActive: boolean
-}
 
 interface DropsSectionProps {
   drops: Drop[]
@@ -26,6 +16,12 @@ export const DropsSection: React.FC<DropsSectionProps> = ({
   const handleSelectDrop = (drop: Drop) => {
     setSelectedDrop(drop)
     onDropSelect?.(drop)
+  }
+
+  const formatDate = (dateString?: string) => {
+    if (!dateString) return 'Sin fecha'
+    const date = new Date(dateString)
+    return date.toLocaleDateString('es-ES', { year: 'numeric', month: 'long' })
   }
 
   return (
@@ -48,7 +44,7 @@ export const DropsSection: React.FC<DropsSectionProps> = ({
                   }
                 `}
               >
-                {drop.season} {drop.year}
+                {drop.name}
               </button>
             ))}
           </div>
@@ -59,8 +55,9 @@ export const DropsSection: React.FC<DropsSectionProps> = ({
       {selectedDrop && (
         <CatalogLayout
           products={selectedDrop.products}
-          title={selectedDrop.title}
+          title={selectedDrop.name}
           description={selectedDrop.description}
+          dropDate={selectedDrop.date}
         />
       )}
     </div>
