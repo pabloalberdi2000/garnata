@@ -162,22 +162,13 @@ export const contentfulService = {
         content_type: 'product',
       })
 
-      console.log('Available products:', allResponse.items.map((item: any) => ({
-        id: item.sys.id,
-        name: item.fields.name,
-        slug: item.fields.slug
-      })))
-
       const normalizedSlug = slug.toLowerCase().trim()
       const matchedItem = allResponse.items.find((item: any) => {
         const itemSlug = item.fields.slug?.toLowerCase().trim()
-        const matches = itemSlug === normalizedSlug || item.sys.id === slug
-        console.log(`Comparing "${normalizedSlug}" with "${itemSlug}" (id: ${item.sys.id}): ${matches}`)
-        return matches
+        return itemSlug === normalizedSlug || item.sys.id === slug
       }) as any
 
       if (!matchedItem) {
-        console.warn(`Product not found with slug: ${slug}`)
         return null
       }
 

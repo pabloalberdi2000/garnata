@@ -1,37 +1,14 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { useProductBySlug, useProduct } from '../hooks/useContentful'
+import { useProductBySlug } from '../hooks/useContentful'
 import { useCart } from '../hooks/useCart'
 import ImageLightbox from '../components/product/ImageLightbox'
-import type { Product } from '../services/contentfulService'
 
 export const ProductDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>()
   const navigate = useNavigate()
-  const { data: productBySlug, loading: slugLoading, error: slugError } = useProductBySlug(slug || '')
-  const { data: productById, loading: idLoading, error: idError } = useProduct(slug || '')
+  const { data: product, loading, error } = useProductBySlug(slug || '')
   const { items: cartItems, addItem, updateQuantity, removeItem } = useCart()
-  const [product, setProduct] = useState<Product | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-
-  useEffect(() => {
-    if (productBySlug) {
-      setProduct(productBySlug)
-      setError(null)
-      setLoading(false)
-    } else if (productById) {
-      setProduct(productById)
-      setError(null)
-      setLoading(false)
-    } else if (!slugLoading && !idLoading) {
-      setProduct(null)
-      setError(slugError || idError)
-      setLoading(false)
-    } else {
-      setLoading(true)
-    }
-  }, [productBySlug, productById, slugLoading, idLoading, slugError, idError])
 
   React.useEffect(() => {
     window.scrollTo(0, 0)

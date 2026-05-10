@@ -43,7 +43,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   }
 
   return (
-    <Link to={`/product/${product.slug || product.id}`} className="group">
+    <Link to={`/product/${product.slug}`} className="group">
       <div className="bg-white border border-slate-200 overflow-hidden hover:border-slate-400 transition-all duration-300">
         {/* Image Container */}
         <div className="relative bg-slate-100 h-72 overflow-hidden">
