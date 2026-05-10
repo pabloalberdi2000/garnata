@@ -10,6 +10,12 @@ import CartPage from './pages/Cart'
 import About from './pages/About'
 import './styles/index.css'
 
+if (typeof window !== 'undefined') {
+  console.log('Environment Check:')
+  console.log('VITE_CONTENTFUL_SPACE_ID:', import.meta.env.VITE_CONTENTFUL_SPACE_ID ? '✓ Set' : '✗ Missing')
+  console.log('VITE_CONTENTFUL_ACCESS_TOKEN:', import.meta.env.VITE_CONTENTFUL_ACCESS_TOKEN ? '✓ Set' : '✗ Missing')
+}
+
 const App: React.FC = () => {
   return (
     <Router>
