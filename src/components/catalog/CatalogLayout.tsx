@@ -9,6 +9,7 @@ interface CatalogLayoutProps {
   title?: string
   description?: string
   dropDate?: string
+  dropImage?: string
 }
 
 type LayoutType = 'hero' | 'asymmetric' | 'magazine'
@@ -18,10 +19,21 @@ export const CatalogLayout: React.FC<CatalogLayoutProps> = ({
   title = 'Drops',
   description = 'Colecciones exclusivas de temporada',
   dropDate,
+  dropImage,
 }) => {
   const navigate = useNavigate()
   const { addItem, items: cartItems, updateQuantity, removeItem } = useCart()
   const [hoveredProductId, setHoveredProductId] = useState<string | null>(null)
+  const [scrollY, setScrollY] = useState(0)
+
+  React.useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY)
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   const formatDate = (dateString?: string) => {
     if (!dateString) return ''
@@ -35,8 +47,8 @@ export const CatalogLayout: React.FC<CatalogLayoutProps> = ({
     return 'magazine'
   }, [products.length])
 
-  const handleProductClick = (productId: string) => {
-    navigate(`/product/${productId}`)
+  const handleProductClick = (product: Product) => {
+    navigate(`/product/${product.slug || product.id}`)
   }
 
   const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement>, product: Product) => {
@@ -51,65 +63,138 @@ export const CatalogLayout: React.FC<CatalogLayoutProps> = ({
 
   return (
     <div className="min-h-screen bg-cream-50">
-      {/* Editorial Header - Hero Style */}
-      <section className="relative bg-gradient-to-br from-white via-cream-50 to-white overflow-hidden">
-        <div className="absolute inset-0 opacity-30">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-gold-100 rounded-full blur-3xl -mr-48 -mt-48"></div>
-          <div className="absolute bottom-0 left-1/3 w-80 h-80 bg-gold-50 rounded-full blur-3xl -mb-48"></div>
-        </div>
+      {/* Hero Header with Background Image */}
+      {dropImage && (
+        <section
+          className="relative h-screen flex items-center justify-center overflow-hidden"
+          style={{
+            backgroundImage: `url(${dropImage})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundAttachment: 'fixed',
+            backgroundClip: 'border-box',
+          }}
+        >
+          {/* Gradient Overlays */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/30 to-black/60" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-transparent" />
 
-        <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-24 md:py-32">
-          <div className="space-y-6 max-w-3xl">
-            {/* Eyebrow */}
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-px bg-slate-900"></div>
-              <p className="text-xs font-light tracking-[0.2em] uppercase text-slate-600">
-                Colección Exclusiva
-              </p>
-            </div>
-
-            {/* Main Title */}
-            <h1 className="text-6xl md:text-7xl lg:text-8xl font-serif font-light leading-none text-slate-900 tracking-tight">
-              {title}
-            </h1>
-
-            {/* Description */}
-            <p className="text-lg md:text-xl font-light text-slate-600 leading-relaxed max-w-2xl pt-4">
-              {description}
-            </p>
-
-            {/* Meta Info */}
-            <div className="flex items-center gap-8 pt-6 border-t border-cream-200">
-              <div>
-                <p className="text-xs font-light tracking-wider uppercase text-slate-500 mb-1">
-                  Piezas Disponibles
+          {/* Content */}
+          <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 w-full">
+            <div className="space-y-6 max-w-3xl">
+              {/* Eyebrow */}
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-px bg-white/50"></div>
+                <p className="text-xs font-light tracking-[0.2em] uppercase text-white/80">
+                  Colección Exclusiva
                 </p>
-                <p className="text-2xl font-light text-slate-900">{products.length}</p>
               </div>
-              {products.length > 0 && (
+
+              {/* Main Title */}
+              <h1 className="text-6xl md:text-7xl lg:text-8xl font-serif font-light leading-none text-white tracking-tight drop-shadow-lg">
+                {title}
+              </h1>
+
+              {/* Description */}
+              <p className="text-lg md:text-xl font-light text-white/85 leading-relaxed max-w-2xl pt-4 drop-shadow-md">
+                {description}
+              </p>
+
+              {/* Meta Info */}
+              <div className="flex items-center gap-8 pt-6 border-t border-white/30">
                 <div>
-                  <p className="text-xs font-light tracking-wider uppercase text-slate-500 mb-1">
-                    Precio desde
+                  <p className="text-xs font-light tracking-wider uppercase text-white/70 mb-1 drop-shadow-md">
+                    Piezas Disponibles
                   </p>
-                  <p className="text-2xl font-light text-slate-900">
-                    €{Math.min(...products.map(p => p.price)).toFixed(0)}
-                  </p>
+                  <p className="text-2xl font-light text-white drop-shadow-lg">{products.length}</p>
                 </div>
-              )}
-              {dropDate && (
-                <div>
-                  <p className="text-xs font-light tracking-wider uppercase text-slate-500 mb-1">
-                    Fecha del Drop
-                  </p>
-                  <p className="text-2xl font-light text-slate-900">
-                    {formatDate(dropDate)}
-                  </p>
-                </div>
-              )}
+                {products.length > 0 && (
+                  <div>
+                    <p className="text-xs font-light tracking-wider uppercase text-white/70 mb-1 drop-shadow-md">
+                      Precio desde
+                    </p>
+                    <p className="text-2xl font-light text-white drop-shadow-lg">
+                      €{Math.min(...products.map(p => p.price)).toFixed(0)}
+                    </p>
+                  </div>
+                )}
+                {dropDate && (
+                  <div>
+                    <p className="text-xs font-light tracking-wider uppercase text-white/70 mb-1 drop-shadow-md">
+                      Fecha del Drop
+                    </p>
+                    <p className="text-2xl font-light text-white drop-shadow-lg">
+                      {formatDate(dropDate)}
+                    </p>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
+
+      {/* Editorial Header - Hero Style (fallback if no image) */}
+      {!dropImage && (
+        <section className="relative bg-gradient-to-br from-white via-cream-50 to-white overflow-hidden">
+          <div className="absolute inset-0 opacity-30">
+            <div className="absolute top-0 right-0 w-96 h-96 bg-gold-100 rounded-full blur-3xl -mr-48 -mt-48"></div>
+            <div className="absolute bottom-0 left-1/3 w-80 h-80 bg-gold-50 rounded-full blur-3xl -mb-48"></div>
+          </div>
+
+          <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-24 md:py-32">
+            <div className="space-y-6 max-w-3xl">
+              {/* Eyebrow */}
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-px bg-slate-900"></div>
+                <p className="text-xs font-light tracking-[0.2em] uppercase text-slate-600">
+                  Colección Exclusiva
+                </p>
+              </div>
+
+              {/* Main Title */}
+              <h1 className="text-6xl md:text-7xl lg:text-8xl font-serif font-light leading-none text-slate-900 tracking-tight">
+                {title}
+              </h1>
+
+              {/* Description */}
+              <p className="text-lg md:text-xl font-light text-slate-600 leading-relaxed max-w-2xl pt-4">
+                {description}
+              </p>
+
+              {/* Meta Info */}
+              <div className="flex items-center gap-8 pt-6 border-t border-cream-200">
+                <div>
+                  <p className="text-xs font-light tracking-wider uppercase text-slate-500 mb-1">
+                    Piezas Disponibles
+                  </p>
+                  <p className="text-2xl font-light text-slate-900">{products.length}</p>
+                </div>
+                {products.length > 0 && (
+                  <div>
+                    <p className="text-xs font-light tracking-wider uppercase text-slate-500 mb-1">
+                      Precio desde
+                    </p>
+                    <p className="text-2xl font-light text-slate-900">
+                      €{Math.min(...products.map(p => p.price)).toFixed(0)}
+                    </p>
+                  </div>
+                )}
+                {dropDate && (
+                  <div>
+                    <p className="text-xs font-light tracking-wider uppercase text-slate-500 mb-1">
+                      Fecha del Drop
+                    </p>
+                    <p className="text-2xl font-light text-slate-900">
+                      {formatDate(dropDate)}
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Products Layout */}
       <section className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-24 md:py-32">
@@ -178,7 +263,7 @@ const HeroLayout: React.FC<{
   product: Product
   hoveredId: string | null
   setHoveredId: (id: string | null) => void
-  onProductClick: (id: string) => void
+  onProductClick: (product: Product) => void
   onAddToCart: (e: React.MouseEvent<HTMLButtonElement>, product: Product) => void
   cartItems: any[]
   onUpdateQuantity: (id: string, quantity: number) => void
@@ -201,7 +286,7 @@ const HeroLayout: React.FC<{
           className="relative overflow-hidden bg-gradient-to-br from-slate-50 to-cream-100 aspect-square cursor-pointer"
           onMouseEnter={() => setHoveredId(product.id)}
           onMouseLeave={() => setHoveredId(null)}
-          onClick={() => onProductClick(product.id)}
+          onClick={() => onProductClick(product)}
         >
           {product.pictures?.[0] ? (
             <img
@@ -233,7 +318,7 @@ const HeroLayout: React.FC<{
         </div>
 
         {/* Product Name */}
-        <div className="cursor-pointer" onClick={() => onProductClick(product.id)}>
+        <div className="cursor-pointer" onClick={() => onProductClick(product)}>
           <h2 className="text-5xl lg:text-6xl font-serif font-light leading-tight text-slate-900 mb-6 hover:text-slate-700 transition-colors">
             {product.name}
           </h2>
@@ -246,7 +331,7 @@ const HeroLayout: React.FC<{
         <div className="h-px bg-cream-200"></div>
 
         {/* Price & Details */}
-        <div className="space-y-4 cursor-pointer" onClick={() => onProductClick(product.id)}>
+        <div className="space-y-4 cursor-pointer" onClick={() => onProductClick(product)}>
           <div className="flex items-baseline gap-2">
             <span className="text-5xl font-light text-slate-900">
               €{product.price.toFixed(0)}
@@ -311,7 +396,7 @@ const AsymmetricLayout: React.FC<{
   products: Product[]
   hoveredId: string | null
   setHoveredId: (id: string | null) => void
-  onProductClick: (id: string) => void
+  onProductClick: (product: Product) => void
   onAddToCart: (e: React.MouseEvent<HTMLButtonElement>, product: Product) => void
   cartItems: any[]
   onUpdateQuantity: (id: string, quantity: number) => void
@@ -334,7 +419,7 @@ const AsymmetricLayout: React.FC<{
           className="relative overflow-hidden bg-gradient-to-br from-slate-50 to-cream-100 aspect-square lg:aspect-auto lg:h-96 cursor-pointer"
           onMouseEnter={() => setHoveredId(products[0].id)}
           onMouseLeave={() => setHoveredId(null)}
-          onClick={() => onProductClick(products[0].id)}
+          onClick={() => onProductClick(products[0])}
         >
           {products[0].pictures?.[0] ? (
             <img
@@ -352,7 +437,7 @@ const AsymmetricLayout: React.FC<{
         </div>
 
         <div className="mt-12 space-y-4">
-          <div className="cursor-pointer" onClick={() => onProductClick(products[0].id)}>
+          <div className="cursor-pointer" onClick={() => onProductClick(products[0])}>
             <div className="w-6 h-px bg-slate-900"></div>
             <h3 className="text-4xl font-serif font-light text-slate-900 hover:text-slate-700 transition-colors">
               {products[0].name}
@@ -419,7 +504,7 @@ const AsymmetricLayout: React.FC<{
           className="relative overflow-hidden bg-gradient-to-br from-slate-50 to-cream-100 aspect-square mb-8 cursor-pointer"
           onMouseEnter={() => setHoveredId(products[1].id)}
           onMouseLeave={() => setHoveredId(null)}
-          onClick={() => onProductClick(products[1].id)}
+          onClick={() => onProductClick(products[1])}
         >
           {products[1].pictures?.[0] ? (
             <img
@@ -437,7 +522,7 @@ const AsymmetricLayout: React.FC<{
         </div>
 
         <div className="space-y-3 flex-1 flex flex-col justify-between">
-          <div className="cursor-pointer" onClick={() => onProductClick(products[1].id)}>
+          <div className="cursor-pointer" onClick={() => onProductClick(products[1])}>
             <div className="w-4 h-px bg-slate-900"></div>
             <h3 className="text-2xl font-serif font-light text-slate-900 hover:text-slate-700 transition-colors">
               {products[1].name}
@@ -505,7 +590,7 @@ const MagazineLayout: React.FC<{
   products: Product[]
   hoveredId: string | null
   setHoveredId: (id: string | null) => void
-  onProductClick: (id: string) => void
+  onProductClick: (product: Product) => void
   onAddToCart: (e: React.MouseEvent<HTMLButtonElement>, product: Product) => void
   cartItems: any[]
   onUpdateQuantity: (id: string, quantity: number) => void
@@ -532,7 +617,7 @@ const MagazineLayout: React.FC<{
           className="relative overflow-hidden bg-gradient-to-br from-slate-50 to-cream-100 aspect-square lg:aspect-auto lg:h-96 cursor-pointer"
           onMouseEnter={() => setHoveredId(products[0].id)}
           onMouseLeave={() => setHoveredId(null)}
-          onClick={() => onProductClick(products[0].id)}
+          onClick={() => onProductClick(products[0])}
         >
           {products[0].pictures?.[0] ? (
             <img
@@ -549,7 +634,7 @@ const MagazineLayout: React.FC<{
           <StatusBadge status="available" className="absolute top-8 right-8 z-10" />
         </div>
 
-        <div className="mt-16 space-y-6 max-w-2xl cursor-pointer" onClick={() => onProductClick(products[0].id)}>
+        <div className="mt-16 space-y-6 max-w-2xl cursor-pointer" onClick={() => onProductClick(products[0])}>
           <div className="space-y-3">
             <div className="w-8 h-px bg-slate-900"></div>
             <p className="text-xs font-light tracking-[0.2em] uppercase text-slate-600">
@@ -584,7 +669,7 @@ const MagazineLayout: React.FC<{
               className="relative overflow-hidden bg-gradient-to-br from-slate-50 to-cream-100 aspect-square mb-8 cursor-pointer"
               onMouseEnter={() => setHoveredId(product.id)}
               onMouseLeave={() => setHoveredId(null)}
-              onClick={() => onProductClick(product.id)}
+              onClick={() => onProductClick(product)}
             >
               {product.pictures?.[0] ? (
                 <img
@@ -603,14 +688,14 @@ const MagazineLayout: React.FC<{
 
             <div className="space-y-3 relative">
               <div className="w-4 h-px bg-slate-900"></div>
-              <h3 className="text-2xl font-serif font-light text-slate-900 cursor-pointer hover:text-slate-700 transition-colors" onClick={() => onProductClick(product.id)}>
+              <h3 className="text-2xl font-serif font-light text-slate-900 cursor-pointer hover:text-slate-700 transition-colors" onClick={() => onProductClick(product)}>
                 {product.name}
               </h3>
-              <p className="text-xs font-light text-slate-600 leading-relaxed cursor-pointer" onClick={() => onProductClick(product.id)}>
+              <p className="text-xs font-light text-slate-600 leading-relaxed cursor-pointer" onClick={() => onProductClick(product)}>
                 {product.description}
               </p>
               <div className="border-t border-cream-200 pt-3">
-                <p className="text-2xl font-light text-slate-900 cursor-pointer" onClick={() => onProductClick(product.id)}>
+                <p className="text-2xl font-light text-slate-900 cursor-pointer" onClick={() => onProductClick(product)}>
                   €{product.price.toFixed(0)}
                 </p>
                 <p className="text-xs font-light tracking-wider text-slate-500 uppercase mt-1">
@@ -679,7 +764,7 @@ const MagazineLayout: React.FC<{
                     </button>
                     <button
                       onClick={() => {
-                        onProductClick(product.id)
+                        onProductClick(product)
                         setOpenDropdown(null)
                       }}
                       className="w-full px-6 py-3 text-slate-900 text-xs font-light tracking-widest uppercase hover:bg-cream-50 transition-colors text-left border-t border-slate-200"

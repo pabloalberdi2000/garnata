@@ -38,6 +38,10 @@ const processSteps: ProcessStep[] = [
 export const About: React.FC = () => {
   const { data: brandInfo, loading } = useBrandInfo()
 
+  React.useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
   if (loading) {
     return (
       <div className="min-h-screen bg-cream-50 flex items-center justify-center">

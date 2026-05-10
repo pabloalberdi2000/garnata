@@ -50,6 +50,13 @@ export const useProduct = (productId: string): UseDataResult<Product> => {
   )
 }
 
+export const useProductBySlug = (slug: string): UseDataResult<Product> => {
+  return useContentful(
+    () => contentfulService.getProductBySlug(slug) as Promise<Product>,
+    [slug]
+  )
+}
+
 export const useCollections = (): UseDataResult<Collection[]> => {
   return useContentful(() => contentfulService.getCollections(), [])
 }

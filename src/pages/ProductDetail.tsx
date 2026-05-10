@@ -1,15 +1,43 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { useProduct } from '../hooks/useContentful'
+import { useProductBySlug, useProduct } from '../hooks/useContentful'
 import { useCart } from '../hooks/useCart'
+import ImageLightbox from '../components/product/ImageLightbox'
+import type { Product } from '../services/contentfulService'
 
 export const ProductDetail: React.FC = () => {
-  const { productId } = useParams<{ productId: string }>()
+  const { slug } = useParams<{ slug: string }>()
   const navigate = useNavigate()
-  const { data: product, loading, error } = useProduct(productId || '')
+  const { data: productBySlug, loading: slugLoading, error: slugError } = useProductBySlug(slug || '')
+  const { data: productById, loading: idLoading, error: idError } = useProduct(slug || '')
   const { items: cartItems, addItem, updateQuantity, removeItem } = useCart()
+  const [product, setProduct] = useState<Product | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
-  const cartItem = cartItems.find(item => item.id === productId)
+  useEffect(() => {
+    if (productBySlug) {
+      setProduct(productBySlug)
+      setError(null)
+      setLoading(false)
+    } else if (productById) {
+      setProduct(productById)
+      setError(null)
+      setLoading(false)
+    } else if (!slugLoading && !idLoading) {
+      setProduct(null)
+      setError(slugError || idError)
+      setLoading(false)
+    } else {
+      setLoading(true)
+    }
+  }, [productBySlug, productById, slugLoading, idLoading, slugError, idError])
+
+  React.useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [slug])
+
+  const cartItem = cartItems.find(item => item.id === product?.id)
 
   const handleAddToCart = () => {
     if (!product) return
@@ -22,22 +50,22 @@ export const ProductDetail: React.FC = () => {
   }
 
   const handleIncrement = () => {
-    if (cartItem) {
-      updateQuantity(productId || '', cartItem.quantity + 1)
+    if (cartItem && product) {
+      updateQuantity(product.id, cartItem.quantity + 1)
     }
   }
 
   const handleDecrement = () => {
-    if (cartItem) {
+    if (cartItem && product) {
       if (cartItem.quantity > 1) {
-        updateQuantity(productId || '', cartItem.quantity - 1)
+        updateQuantity(product.id, cartItem.quantity - 1)
       } else {
-        removeItem(productId || '')
+        removeItem(product.id)
       }
     }
   }
 
-  if (!productId) {
+  if (!slug) {
     return (
       <div className="min-h-screen bg-cream-50 flex items-center justify-center">
         <div className="text-center">
@@ -100,34 +128,7 @@ export const ProductDetail: React.FC = () => {
           {/* Images Section */}
           <div className="space-y-6">
             {product.pictures && product.pictures.length > 0 ? (
-              <>
-                {/* Main Image */}
-                <div className="relative overflow-hidden bg-gradient-to-br from-slate-50 to-cream-100 aspect-square">
-                  <img
-                    src={product.pictures[0]}
-                    alt={product.name}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-
-                {/* Thumbnail Gallery */}
-                {product.pictures.length > 1 && (
-                  <div className="grid grid-cols-4 gap-4">
-                    {product.pictures.map((pic, idx) => (
-                      <button
-                        key={idx}
-                        className="relative overflow-hidden bg-gradient-to-br from-slate-50 to-cream-100 aspect-square hover:opacity-75 transition-opacity"
-                      >
-                        <img
-                          src={pic}
-                          alt={`${product.name} - Imagen ${idx + 1}`}
-                          className="w-full h-full object-cover"
-                        />
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </>
+              <ImageLightbox images={product.pictures} productName={product.name} />
             ) : (
               <div className="relative overflow-hidden bg-gradient-to-br from-slate-50 to-cream-100 aspect-square flex items-center justify-center text-8xl opacity-20 font-light">
                 ◆
@@ -204,16 +205,6 @@ export const ProductDetail: React.FC = () => {
                 </p>
               </div>
 
-              {product.slug && (
-                <div>
-                  <p className="text-xs font-light tracking-widest uppercase text-slate-500 mb-2">
-                    SKU
-                  </p>
-                  <p className="text-sm font-light text-slate-600">
-                    {product.slug}
-                  </p>
-                </div>
-              )}
             </div>
 
             {/* Divider */}

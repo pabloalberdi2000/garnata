@@ -150,6 +150,60 @@ export const contentfulService = {
     }
   },
 
+  // Obtener producto por slug
+  getProductBySlug: async (slug: string): Promise<Product | null> => {
+    try {
+      if (!client) {
+        return null
+      }
+
+      // Obtener todos los productos y buscar por coincidencia flexible
+      const allResponse = await client.getEntries({
+        content_type: 'product',
+      })
+
+      console.log('Available products:', allResponse.items.map((item: any) => ({
+        id: item.sys.id,
+        name: item.fields.name,
+        slug: item.fields.slug
+      })))
+
+      const normalizedSlug = slug.toLowerCase().trim()
+      const matchedItem = allResponse.items.find((item: any) => {
+        const itemSlug = item.fields.slug?.toLowerCase().trim()
+        const matches = itemSlug === normalizedSlug || item.sys.id === slug
+        console.log(`Comparing "${normalizedSlug}" with "${itemSlug}" (id: ${item.sys.id}): ${matches}`)
+        return matches
+      }) as any
+
+      if (!matchedItem) {
+        console.warn(`Product not found with slug: ${slug}`)
+        return null
+      }
+
+      // Extraer URLs de imágenes de pictures
+      let pictures: string[] = []
+      if (matchedItem.fields.pictures && Array.isArray(matchedItem.fields.pictures)) {
+        pictures = matchedItem.fields.pictures
+          .map((pic: any) => pic.fields?.file?.url)
+          .filter(Boolean)
+      }
+
+      return {
+        id: matchedItem.sys.id,
+        name: matchedItem.fields.name || '',
+        slug: matchedItem.fields.slug,
+        price: matchedItem.fields.price || 0,
+        description: extractRichTextContent(matchedItem.fields.description),
+        pictures,
+        status: matchedItem.fields.status,
+      }
+    } catch (error) {
+      console.error(`Error fetching product with slug ${slug}:`, error)
+      return null
+    }
+  },
+
   // Obtener colecciones disponibles
   getCollections: async (): Promise<Collection[]> => {
     try {

@@ -18,6 +18,10 @@ const mockDrops = [
 export const Catalog: React.FC = () => {
   const { data: drops, loading, error } = useDrops()
 
+  React.useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
   // Usar datos de Contentful si están disponibles, sino usar mock
   const displayDrops = drops.length > 0 ? drops : mockDrops
 

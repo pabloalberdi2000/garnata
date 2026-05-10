@@ -3,6 +3,10 @@ import CartItems from '../components/cart/CartItems'
 import CartSummary from '../components/cart/CartSummary'
 
 export const CartPage: React.FC = () => {
+  React.useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
   return (
     <div className="min-h-screen bg-cream-50 py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

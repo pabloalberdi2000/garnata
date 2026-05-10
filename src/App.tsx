@@ -1,6 +1,7 @@
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Navbar from './components/layout/Navbar'
+import UpcomingDropBanner from './components/layout/UpcomingDropBanner'
 import Footer from './components/layout/Footer'
 import Home from './pages/Home'
 import Catalog from './pages/Catalog'
@@ -13,12 +14,13 @@ const App: React.FC = () => {
   return (
     <Router>
       <div className="flex flex-col min-h-screen bg-white">
+        <UpcomingDropBanner />
         <Navbar />
         <main className="flex-grow">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/catalog" element={<Catalog />} />
-            <Route path="/product/:productId" element={<ProductDetail />} />
+            <Route path="/product/:slug" element={<ProductDetail />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/about" element={<About />} />
           </Routes>

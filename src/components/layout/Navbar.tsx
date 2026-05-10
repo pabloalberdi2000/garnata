@@ -1,24 +1,28 @@
 import React, { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useCart } from '../../hooks/useCart'
+import { useDrops } from '../../hooks/useDrops'
 import CartIcon from '../icons/CartIcon'
 
 export const Navbar: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false)
   const { totalItems } = useCart()
   const location = useLocation()
+  const { data: drops } = useDrops()
 
   const isActive = (path: string) => {
     return location.pathname === path || location.pathname.startsWith(path + '/')
   }
 
+  const hasFutureDrop = drops.some(drop => drop.date && new Date(drop.date) > new Date())
+
   return (
-    <nav className="bg-white border-b border-slate-200 sticky top-0 z-50">
+    <nav className={`bg-white border-b border-slate-200 sticky z-40 ${hasFutureDrop ? 'top-7' : 'top-0'}`}>
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="flex justify-between items-center h-20">
+        <div className="flex justify-between items-center h-14">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
-            <span className="text-2xl font-serif font-light text-slate-900 tracking-widest">GARNATA</span>
+            <span className="text-lg font-serif font-light text-slate-900 tracking-widest">GARNATA</span>
           </Link>
 
           {/* Desktop Menu */}
