@@ -1,11 +1,6 @@
 {
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
-  "env": {
-    "VITE_CONTENTFUL_SPACE_ID": "@vite_contentful_space_id",
-    "VITE_CONTENTFUL_ACCESS_TOKEN": "@vite_contentful_access_token",
-    "VITE_CONTENTFUL_ENVIRONMENT": "master"
-  },
   "rewrites": [
     {
       "source": "/(.*)",
