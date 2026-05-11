@@ -249,7 +249,7 @@ export const OrderForm: React.FC<OrderFormProps> = ({ onSuccess, onCancel }) => 
                     €{total.toFixed(2)}
                   </span>
                 </div>
-                <div className="bg-blue-50 px-2 py-1 rounded text-xs text-blue-700 text-center font-medium mt-2">
+                <div className="bg-cream-100 px-2 py-1 rounded text-xs text-slate-700 text-center font-medium mt-2">
                   ℹ️ IVA incluido en el precio
                 </div>
               </div>

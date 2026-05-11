@@ -71,7 +71,7 @@ export const CartSummary: React.FC = () => {
                 <span className="text-slate-600">Envío</span>
                 <span className="text-green-600 font-medium">Gratis</span>
               </div>
-              <div className="bg-blue-50 px-3 py-2 rounded text-xs text-blue-700 text-center font-medium">
+              <div className="bg-cream-100 px-3 py-2 rounded text-xs text-slate-700 text-center font-medium">
                 ℹ️ IVA incluido en el precio (21%)
               </div>
             </div>
