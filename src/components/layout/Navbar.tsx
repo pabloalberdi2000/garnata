@@ -47,12 +47,16 @@ export const Navbar: React.FC = () => {
             >
               NOSOTROS
             </Link>
-            <a
-              href="#contact"
-              className="text-slate-700 font-light text-sm tracking-wide hover:text-slate-900 transition-colors duration-300"
+            <Link
+              to="/contact"
+              className={`text-sm tracking-wide transition-colors duration-300 ${
+                isActive('/contact')
+                  ? 'font-semibold text-slate-900 border-b-2 border-slate-900 pb-1'
+                  : 'font-light text-slate-700 hover:text-slate-900'
+              }`}
             >
               CONTACTO
-            </a>
+            </Link>
           </div>
 
           {/* Cart Icon */}
@@ -114,9 +118,17 @@ export const Navbar: React.FC = () => {
             >
               NOSOTROS
             </Link>
-            <a href="#contact" className="block py-3 text-slate-700 font-light text-sm tracking-wide hover:text-slate-900">
+            <Link
+              to="/contact"
+              className={`block py-3 text-sm tracking-wide transition-colors ${
+                isActive('/contact')
+                  ? 'font-semibold text-slate-900'
+                  : 'font-light text-slate-700 hover:text-slate-900'
+              }`}
+              onClick={() => setMenuOpen(false)}
+            >
               CONTACTO
-            </a>
+            </Link>
           </div>
         )}
       </div>

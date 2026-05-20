@@ -8,6 +8,7 @@ import Catalog from './pages/Catalog'
 import ProductDetail from './pages/ProductDetail'
 import CartPage from './pages/Cart'
 import About from './pages/About'
+import Contact from './pages/Contact'
 import './styles/index.css'
 
 if (typeof window !== 'undefined') {
@@ -29,6 +30,7 @@ const App: React.FC = () => {
             <Route path="/product/:slug" element={<ProductDetail />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
           </Routes>
         </main>
         <Footer />
